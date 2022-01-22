@@ -16,15 +16,15 @@ public class GameEventHandler {
 		this.bridge = bridge;
 	}
 
-	@SubscribeEvent
-	public void playerLoggedIn(PlayerEvent.PlayerLoggedInEvent e) {
-		toIrc(String.format(FORMAT1_MC_LOGIN, SIBUtil.mangle(e.getPlayer().getDisplayName().getString())));
-	}
-
-	@SubscribeEvent
-	public void playerLoggedOut(PlayerEvent.PlayerLoggedOutEvent e) {
-		toIrc(String.format(FORMAT1_MC_LOGOUT, SIBUtil.mangle(e.getPlayer().getDisplayName().getString())));
-	}
+//	@SubscribeEvent
+//	public void playerLoggedIn(PlayerEvent.PlayerLoggedInEvent e) {
+//		toIrc(String.format(FORMAT1_MC_LOGIN, SIBUtil.mangle(e.getPlayer().getDisplayName().getString())));
+//	}
+//
+//	@SubscribeEvent
+//	public void playerLoggedOut(PlayerEvent.PlayerLoggedOutEvent e) {
+//		toIrc(String.format(FORMAT1_MC_LOGOUT, SIBUtil.mangle(e.getPlayer().getDisplayName().getString())));
+//	}
 
 //	@SubscribeEvent
 //	public void command(CommandEvent e) {
@@ -60,16 +60,16 @@ public class GameEventHandler {
 		if (SIBConfig.IRC_FORMATTING.get()) {
 			content = IRCMinecraftConverter.convMinecraftToIRC(content);
 		}
-		toIrc(String.format(FORMAT2_MC_CHAT, SIBUtil.mangle(e.getPlayer().getDisplayName().getString()), content));
+		toIrc(String.format(FORMAT2_MC_CHAT, e.getPlayer().getDisplayName().getString(), content));
 	}
 
-	@SubscribeEvent
-	public void livingDeath(LivingDeathEvent e) {
-		if (e.getEntityLiving() instanceof PlayerEntity) {
-			toIrc(String.format(FORMAT1_MC_DEATH,
-					e.getSource().getDeathMessage(e.getEntityLiving()).getString()));
-		}
-	}
+//	@SubscribeEvent
+//	public void livingDeath(LivingDeathEvent e) {
+//		if (e.getEntityLiving() instanceof PlayerEntity) {
+//			toIrc(String.format(FORMAT1_MC_DEATH,
+//					e.getSource().getDeathMessage(e.getEntityLiving()).getString()));
+//		}
+//	}
 
 	private void toIrc(String s) {
 		this.bridge.sendToIrc(s);

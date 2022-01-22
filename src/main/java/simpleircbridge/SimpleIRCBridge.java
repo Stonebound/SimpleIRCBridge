@@ -1,16 +1,19 @@
 package simpleircbridge;
 
-import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ExtensionPoint;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.event.server.FMLServerStoppedEvent;
 import net.minecraftforge.fml.event.server.FMLServerStoppingEvent;
 import net.minecraftforge.fml.loading.FMLPaths;
+import net.minecraftforge.fml.network.FMLNetworkConstants;
 import net.minecraftforge.fml.server.ServerLifecycleHooks;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -23,7 +26,6 @@ import net.minecraftforge.fml.common.Mod;
 @Mod(SimpleIRCBridge.MODID)
 public class SimpleIRCBridge {
 	public static final String MODID = "simpleircbridge";
-	public static final String VERSION = "1.12.2_1.2.0";
 
 	private static Logger logger = LogManager.getLogger();
 	private BridgeIRCBot bot;
@@ -31,6 +33,7 @@ public class SimpleIRCBridge {
 
 	public SimpleIRCBridge() {
 		ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, SIBConfig.SERVER_CONFIG);
+		ModLoadingContext.get().registerExtensionPoint(ExtensionPoint.DISPLAYTEST, () -> Pair.of(() -> FMLNetworkConstants.IGNORESERVERONLY, (a, b) -> true));
 
 		MinecraftForge.EVENT_BUS.register(this);
 		MinecraftForge.EVENT_BUS.register(new GameEventHandler(this));
@@ -69,7 +72,7 @@ public class SimpleIRCBridge {
 
 	/* package-private */ void sendToMinecraft(String line) {
 		if (this.mcServer != null) {
-			this.mcServer.getPlayerList().sendMessage(new StringTextComponent(line));
+			this.mcServer.getPlayerList().getPlayers().forEach(player -> player.sendMessage(ForgeHooks.newChatWithLinks(line), player.getUUID()));
 		}
 	}
 }

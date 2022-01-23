@@ -3,17 +3,16 @@ package simpleircbridge;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.event.server.ServerStartingEvent;
+import net.minecraftforge.event.server.ServerStoppedEvent;
+import net.minecraftforge.event.server.ServerStoppingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.ExtensionPoint;
+import net.minecraftforge.fml.IExtensionPoint;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
-import net.minecraftforge.fml.event.server.FMLServerStoppedEvent;
-import net.minecraftforge.fml.event.server.FMLServerStoppingEvent;
 import net.minecraftforge.fml.loading.FMLPaths;
-import net.minecraftforge.fml.network.FMLNetworkConstants;
-import net.minecraftforge.fml.server.ServerLifecycleHooks;
-import org.apache.commons.lang3.tuple.Pair;
+import net.minecraftforge.network.NetworkConstants;
+import net.minecraftforge.server.ServerLifecycleHooks;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -33,7 +32,7 @@ public class SimpleIRCBridge {
 
 	public SimpleIRCBridge() {
 		ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, SIBConfig.SERVER_CONFIG);
-		ModLoadingContext.get().registerExtensionPoint(ExtensionPoint.DISPLAYTEST, () -> Pair.of(() -> FMLNetworkConstants.IGNORESERVERONLY, (a, b) -> true));
+		ModLoadingContext.get().registerExtensionPoint(IExtensionPoint.DisplayTest.class, () -> new IExtensionPoint.DisplayTest(() -> NetworkConstants.IGNORESERVERONLY, (a, b) -> true));
 
 		MinecraftForge.EVENT_BUS.register(this);
 		MinecraftForge.EVENT_BUS.register(new GameEventHandler(this));
@@ -42,19 +41,19 @@ public class SimpleIRCBridge {
 	}
 
 	@SubscribeEvent
-	public void serverStarting(FMLServerStartingEvent event) {
+	public void serverStarting(ServerStartingEvent event) {
 		this.mcServer = ServerLifecycleHooks.getCurrentServer();
 		this.bot = new BridgeIRCBot(this);
 		this.bot.run();
 	}
 
 	@SubscribeEvent
-	public void serverStopping(FMLServerStoppingEvent event) {
+	public void serverStopping(ServerStoppingEvent event) {
 		this.bot.disconnect();
 	}
 
 	@SubscribeEvent
-	public void serverStopped(FMLServerStoppedEvent event) {
+	public void serverStopped(ServerStoppedEvent event) {
 		this.bot.kill();
 		this.bot = null;
 		this.mcServer = null;

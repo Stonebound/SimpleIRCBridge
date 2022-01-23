@@ -2,10 +2,7 @@ package simpleircbridge;
 
 import static simpleircbridge.SIBConstants.*;
 
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraftforge.event.ServerChatEvent;
-import net.minecraftforge.event.entity.living.LivingDeathEvent;
-import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import utils.IRCMinecraftConverter;
 

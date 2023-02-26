@@ -53,7 +53,7 @@ public class GameEventHandler {
 
 	@SubscribeEvent
 	public void serverChat(ServerChatEvent e) {
-		String content = e.getMessage();
+		String content = e.getRawText();
 		if (SIBConfig.IRC_FORMATTING.get()) {
 			content = IRCMinecraftConverter.convMinecraftToIRC(content);
 		}

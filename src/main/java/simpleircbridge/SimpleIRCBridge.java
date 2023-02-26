@@ -71,7 +71,7 @@ public class SimpleIRCBridge {
 
 	/* package-private */ void sendToMinecraft(String line) {
 		if (this.mcServer != null) {
-			this.mcServer.getPlayerList().getPlayers().forEach(player -> player.sendMessage(ForgeHooks.newChatWithLinks(line), player.getUUID()));
+			this.mcServer.getPlayerList().getPlayers().forEach(player -> player.sendSystemMessage(ForgeHooks.newChatWithLinks(line)));
 		}
 	}
 }

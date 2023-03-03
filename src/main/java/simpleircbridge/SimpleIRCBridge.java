@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.FMLCommonHandler;
@@ -73,7 +74,7 @@ public class SimpleIRCBridge {
 
 	/* package-private */ void sendToMinecraft(String line) {
 		if (this.mcServer != null) {
-			this.mcServer.getPlayerList().sendMessage(new TextComponentString(line));
+			this.mcServer.getPlayerList().sendMessage(ForgeHooks.newChatWithLinks(line));
 		}
 	}
 

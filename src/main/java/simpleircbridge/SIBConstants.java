@@ -6,8 +6,8 @@ package simpleircbridge;
  */
 public class SIBConstants {
 	/* == MC FORMATS, 1 PARAMETER == */
-	public static final String FORMAT1_MC_LOGIN = "--> %s joined the game";
-	public static final String FORMAT1_MC_LOGOUT = "<-- %s left the game";
+	public static final String FORMAT1_MC_LOGIN = "> %s joined the game";
+	public static final String FORMAT1_MC_LOGOUT = "< %s left the game";
 	public static final String FORMAT1_MC_DEATH = "RIP: %s";
 
 	/* == MC FORMATS, 2 PARAMETERS == */

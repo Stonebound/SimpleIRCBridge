@@ -3,6 +3,7 @@ package simpleircbridge;
 import static simpleircbridge.SIBConstants.*;
 
 import net.minecraftforge.event.ServerChatEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import utils.IRCMinecraftConverter;
 
@@ -13,15 +14,15 @@ public class GameEventHandler {
 		this.bridge = bridge;
 	}
 
-//	@SubscribeEvent
-//	public void playerLoggedIn(PlayerEvent.PlayerLoggedInEvent e) {
-//		toIrc(String.format(FORMAT1_MC_LOGIN, SIBUtil.mangle(e.getPlayer().getDisplayName().getString())));
-//	}
-//
-//	@SubscribeEvent
-//	public void playerLoggedOut(PlayerEvent.PlayerLoggedOutEvent e) {
-//		toIrc(String.format(FORMAT1_MC_LOGOUT, SIBUtil.mangle(e.getPlayer().getDisplayName().getString())));
-//	}
+	@SubscribeEvent
+	public void playerLoggedIn(PlayerEvent.PlayerLoggedInEvent e) {
+		toIrc(String.format(FORMAT1_MC_LOGIN, SIBUtil.mangle(e.getEntity().getDisplayName().getString())));
+	}
+
+	@SubscribeEvent
+	public void playerLoggedOut(PlayerEvent.PlayerLoggedOutEvent e) {
+		toIrc(String.format(FORMAT1_MC_LOGOUT, SIBUtil.mangle(e.getEntity().getDisplayName().getString())));
+	}
 
 //	@SubscribeEvent
 //	public void command(CommandEvent e) {

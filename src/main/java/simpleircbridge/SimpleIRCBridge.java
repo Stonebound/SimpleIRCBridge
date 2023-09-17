@@ -1,8 +1,10 @@
 package simpleircbridge;
 
+import com.mojang.logging.LogUtils;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.event.server.ServerStoppedEvent;
 import net.minecraftforge.event.server.ServerStoppingEvent;
@@ -13,12 +15,9 @@ import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.loading.FMLPaths;
 import net.minecraftforge.network.NetworkConstants;
 import net.minecraftforge.server.ServerLifecycleHooks;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import net.minecraft.server.MinecraftServer;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
+import org.slf4j.Logger;
 
 
 @OnlyIn(Dist.DEDICATED_SERVER)
@@ -26,7 +25,7 @@ import net.minecraftforge.fml.common.Mod;
 public class SimpleIRCBridge {
 	public static final String MODID = "simpleircbridge";
 
-	private static Logger logger = LogManager.getLogger();
+	public static final Logger logger = LogUtils.getLogger();
 	private BridgeIRCBot bot;
 	private MinecraftServer mcServer;
 

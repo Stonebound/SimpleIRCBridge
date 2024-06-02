@@ -1,76 +1,87 @@
 package net.stonebound.simpleircbridge.simpleircbridge;
 
 import com.mojang.logging.LogUtils;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.server.ServerStartingEvent;
-import net.minecraftforge.event.server.ServerStoppedEvent;
-import net.minecraftforge.event.server.ServerStoppingEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.IExtensionPoint;
-import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.loading.FMLPaths;
-import net.minecraftforge.network.NetworkConstants;
-import net.minecraftforge.server.ServerLifecycleHooks;
+import dev.architectury.event.EventResult;
+import dev.architectury.event.events.common.ChatEvent;
+import dev.architectury.event.events.common.LifecycleEvent;
+import dev.architectury.event.events.common.PlayerEvent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.MinecraftServer;
-import net.minecraftforge.fml.common.Mod;
+import net.stonebound.simpleircbridge.utils.MircColors;
 import org.slf4j.Logger;
 
+import static net.stonebound.simpleircbridge.simpleircbridge.ConfigHolder.MemoryConfigs;
 
-@OnlyIn(Dist.DEDICATED_SERVER)
-@Mod(SimpleIRCBridge.MODID)
-public class SimpleIRCBridge {
-	public static final String MODID = "simpleircbridge";
+
+public class SimpleIRCBridgeCommon {
+
 
 	public static final Logger logger = LogUtils.getLogger();
 	private BridgeIRCBot bot;
 	private MinecraftServer mcServer;
+	public static GameEventHandler eventHandler;
 
-	public SimpleIRCBridge() {
-		ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, SIBConfig.SERVER_CONFIG);
-		ModLoadingContext.get().registerExtensionPoint(IExtensionPoint.DisplayTest.class, () -> new IExtensionPoint.DisplayTest(() -> NetworkConstants.IGNORESERVERONLY, (a, b) -> true));
+	public static String indicator = "This is a string to remind git this is a different file";
 
-		MinecraftForge.EVENT_BUS.register(this);
-		MinecraftForge.EVENT_BUS.register(new GameEventHandler(this));
+	public SimpleIRCBridgeCommon() {
+		eventHandler = new GameEventHandler(this);
 
-		SIBConfig.loadConfig(SIBConfig.SERVER_CONFIG, FMLPaths.CONFIGDIR.get().resolve("simpleircbridge-common.toml"));
+
+		PlayerEvent.PLAYER_JOIN.register((Playerjoin) -> eventHandler.playerLoggedIn(Playerjoin));
+		PlayerEvent.PLAYER_QUIT.register((Playerquit) -> eventHandler.playerLoggedOut(Playerquit));
+
+		ChatEvent.RECEIVED.register((ServerPlayer player, Component chat) -> {
+			eventHandler.serverChat(player, chat);
+			return EventResult.pass();
+		});
+		LifecycleEvent.SERVER_STARTING.register(this::serverStarting);
+		LifecycleEvent.SERVER_STOPPING.register(this::serverStopping);
+		LifecycleEvent.SERVER_STOPPED.register(this::serverStopped);
+
 	}
 
-	@SubscribeEvent
-	public void serverStarting(ServerStartingEvent event) {
-		this.mcServer = ServerLifecycleHooks.getCurrentServer();
+
+	public void serverStarting(MinecraftServer instance) {
+		this.mcServer = instance;
 		this.bot = new BridgeIRCBot(this);
 		this.bot.run();
 	}
 
-	@SubscribeEvent
-	public void serverStopping(ServerStoppingEvent event) {
-		this.bot.disconnect();
+	public void serverStopping(MinecraftServer instance) {
+		if (this.mcServer != null && Boolean.parseBoolean(MemoryConfigs.get("timestop").value)) {
+			this.mcServer.getPlayerList().getPlayers().forEach(player -> sendToIrc(MircColors.BOLD + MircColors.LIGHT_RED + ">>>" + player.getName().getString() + " was still online when time came to a halt<<<"));
+		}
+		if (this.bot != null) {
+			this.bot.disconnect();
+		}
+
 	}
 
-	@SubscribeEvent
-	public void serverStopped(ServerStoppedEvent event) {
-		this.bot.kill();
-		this.bot = null;
+	public void serverStopped(MinecraftServer instance) {
+		if (this.bot != null) {
+			this.bot.kill();
+			this.bot = null;
+		}
+
 		this.mcServer = null;
 	}
 
-	/* package-private */ static Logger log() {
+	/* package-private */
+	static Logger log() {
 		return logger;
 	}
 
 	/* package-private */ void sendToIrc(String line) {
 		if (this.bot != null) {
-			this.bot.sendMessage(SIBConfig.IRC_CHANNEL.get().toString(), line);
+			this.bot.sendMessage(MemoryConfigs.get("channel").value, line);
 		}
 	}
 
-	/* package-private */ void sendToMinecraft(String line) {
+	/* package-private */
+	void sendToMinecraft (String line){
 		if (this.mcServer != null) {
-			this.mcServer.getPlayerList().getPlayers().forEach(player -> player.sendSystemMessage(ForgeHooks.newChatWithLinks(line)));
+			this.mcServer.getPlayerList().getPlayers().forEach(player -> player.sendSystemMessage(Component.literal(line)));
 		}
 	}
 }

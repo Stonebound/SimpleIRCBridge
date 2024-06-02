@@ -11,7 +11,7 @@ import static net.stonebound.simpleircbridge.simpleircbridge.ConfigHolder.*;
 
 public class BridgeIRCBot extends AbstractIRCBot {
 
-	private SimpleIRCBridge bridge;
+	private SimpleIRCBridgeCommon bridge;
 
 //	/* package */ BridgeIRCBot(SimpleIRCBridge bridge) {
 //
@@ -28,7 +28,7 @@ public class BridgeIRCBot extends AbstractIRCBot {
 //		this.bridge = bridge;
 //	}
 
-	BridgeIRCBot(SimpleIRCBridge bridge) {
+	BridgeIRCBot(SimpleIRCBridgeCommon bridge) {
 		super(new InetSocketAddress (MemoryConfigs.get("hostname").value, Integer.valueOf(MemoryConfigs.get("port").value) ), Boolean.valueOf(MemoryConfigs.get("tls").value), new IRCConnectionInfo((MemoryConfigs.get("nick")).value, MemoryConfigs.get("username").value, MemoryConfigs.get("realname").value), MemoryConfigs.get("password").value
 		);
 		this.bridge = bridge;
@@ -36,7 +36,7 @@ public class BridgeIRCBot extends AbstractIRCBot {
 
 	@Override
 	protected void logMessage(String msg) {
-		SimpleIRCBridge.log().debug(msg);
+		SimpleIRCBridgeCommon.log().debug(msg);
 	}
 
 	/* event handling */

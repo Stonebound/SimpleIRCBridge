@@ -8,9 +8,9 @@ import net.minecraft.server.level.ServerPlayer;
 import net.stonebound.simpleircbridge.utils.IRCMinecraftConverter;
 
 public class GameEventHandler {
-	private final SimpleIRCBridge bridge;
+	private final SimpleIRCBridgeCommon bridge;
 
-	public GameEventHandler(SimpleIRCBridge bridge) {
+	public GameEventHandler(SimpleIRCBridgeCommon bridge) {
 		this.bridge = bridge;
 	}
 

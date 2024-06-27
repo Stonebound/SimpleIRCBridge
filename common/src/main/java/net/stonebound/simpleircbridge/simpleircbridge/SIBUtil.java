@@ -1,7 +1,7 @@
 package net.stonebound.simpleircbridge.simpleircbridge;
 
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.contents.LiteralContents;
+import net.minecraft.network.chat.contents.PlainTextContents.LiteralContents;
 
 public class SIBUtil {
 	private SIBUtil() {
@@ -35,6 +35,10 @@ public class SIBUtil {
 
 
 	//This is "borrowed" directly from forgehooks.java, and i will slightly rename variables if someone complains
+	//1.20.4 update
+	// since i didn't cheat to look where this was refactored to, is this now original code despite being exactly the same but with a different reference?
+	//but how do I prove that?
+	//This is truly something to despair over
 
 	public static String getRawText(Component message) {
 		return message.getContents() instanceof LiteralContents literalContents ? literalContents.text() : "";

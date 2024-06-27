@@ -5,7 +5,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 import net.stonebound.simpleircbridge.simpleIRCbridgeLoader;
-
+//TODO Test to ensure this actually works on forge, for some reason its not working in IDE but is assembled, but I can't get a normal vanilla forge server to work
 @Mod(simpleIRCbridgeLoader.MOD_ID)
 public final class simpleircbridgeForge {
     public simpleircbridgeForge() {

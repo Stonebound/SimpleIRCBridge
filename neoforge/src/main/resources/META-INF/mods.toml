@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[49,)"
+loaderVersion = "[2,)"
 #issueTrackerURL = "https://github.com/Stonebound/SimpleIRCBridge"
 license = "BSD-2-Clause"
 
@@ -14,22 +14,25 @@ simple irc bridge stonebound fork
 #logoFile = ""
 
 [[dependencies.simpleircbridge]]
-modId = "forge"
-mandatory = true
-versionRange = "[49,)"
+modId = "neoforge"
+type = "required"
+versionRange = "[20.4,)"
 ordering = "NONE"
-side = "SERVER"
+side = "BOTH"
 
 [[dependencies.simpleircbridge]]
 modId = "minecraft"
-mandatory = true
+type = "required"
 versionRange = "[1.20.4,)"
 ordering = "NONE"
-side = "SERVER"
+side = "BOTH"
 
 [[dependencies.simpleircbridge]]
 modId = "architectury"
-mandatory = true
+type = "required"
 versionRange = "[11.1.17,)"
 ordering = "AFTER"
-side = "SERVER"
+side = "BOTH"
+
+[[mixins]]
+config = "simpleircbridge.mixins.json"

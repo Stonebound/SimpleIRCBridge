@@ -3,6 +3,7 @@ package net.stonebound.simpleircbridge.simpleircbridge;
 import static net.stonebound.simpleircbridge.simpleircbridge.Config.ircFormatting;
 import static net.stonebound.simpleircbridge.simpleircbridge.SIBConstants.*;
 
+import dev.architectury.event.events.common.ChatEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.stonebound.simpleircbridge.utils.IRCMinecraftConverter;
@@ -53,8 +54,12 @@ public class GameEventHandler {
 //	}
 
 
-	public void serverChat(ServerPlayer player, Component component) {
-		String content = SIBUtil.getRawText(component);
+	public void serverChat(ServerPlayer player, ChatEvent.ChatComponent component) {
+		Component chatComponent = component.get().copy();
+		String content = SIBUtil.getRawText(chatComponent);
+		component.set(SimpleIRCBridgeCommon.newChatWithLinks(content, false));
+
+
 		if (player != null) {
 
 			String playername = player.getName().getString();

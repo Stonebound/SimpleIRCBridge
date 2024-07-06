@@ -1,14 +1,12 @@
 package net.stonebound.simpleircbridge.simpleircbridge;
 
 import com.mojang.logging.LogUtils;
-import dev.architectury.event.EventResult;
 import dev.architectury.event.events.common.ChatEvent;
 import dev.architectury.event.events.common.LifecycleEvent;
 import dev.architectury.event.events.common.PlayerEvent;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TextColor;
 import net.minecraft.server.MinecraftServer;
@@ -31,7 +29,6 @@ public class SimpleIRCBridgeCommon {
 	private MinecraftServer mcServer;
 	public static GameEventHandler eventHandler;
 
-	public static String indicator = "This is a string to remind git this is a different file";
 
 	public SimpleIRCBridgeCommon() {
 		eventHandler = new GameEventHandler(this);
@@ -51,6 +48,7 @@ public class SimpleIRCBridgeCommon {
 
 
 	public void serverStarting(MinecraftServer instance) {
+		Config.serverStarting(instance);
 		this.mcServer = instance;
 		this.bot = new BridgeIRCBot(this);
 		this.bot.run();
@@ -60,6 +58,7 @@ public class SimpleIRCBridgeCommon {
 		if (this.mcServer != null && timestop) {
 			this.mcServer.getPlayerList().getPlayers().forEach(player -> sendToIrc(MircColors.BOLD + MircColors.LIGHT_RED + ">>>" + player.getName().getString() + " was still online when time came to a halt<<<"));
 		}
+		Config.serverStopping(instance);
 		if (this.bot != null) {
 			this.bot.disconnect();
 		}

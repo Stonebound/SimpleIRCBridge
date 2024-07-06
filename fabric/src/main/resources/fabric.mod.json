@@ -12,7 +12,7 @@
     "sources": "${mod_git}"
   },
   "license": "${mod_license}",
-  "icon": "assets/sbprometheus/icon.png",
+  "icon": "assets/simpleircbridge/icon.png",
   "environment": "*",
   "entrypoints": {
     "main": [

@@ -10,12 +10,12 @@
       "contributors": {
         "Me!": "${mod_authors}"
       },
-      "icon": "assets/sbprometheus/icon.png"
+      "icon": "assets/simpleircbridge/icon.png"
     },
     "intermediate_mappings": "net.fabricmc:intermediary",
     "entrypoints": {
       "init": [
-        "net.stonebound.sbprometheus.quilt.SbPrometheusQuilt"
+        "net.stonebound.simpleircbridge.quilt.SimpleIRCBridgeQuilt"
       ]
     },
     "depends": [

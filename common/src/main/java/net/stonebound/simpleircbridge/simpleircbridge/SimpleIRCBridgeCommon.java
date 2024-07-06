@@ -11,7 +11,8 @@ import net.minecraft.server.MinecraftServer;
 import net.stonebound.simpleircbridge.utils.MircColors;
 import org.slf4j.Logger;
 
-import static net.stonebound.simpleircbridge.simpleircbridge.ConfigHolder.MemoryConfigs;
+import static net.stonebound.simpleircbridge.simpleircbridge.Config.channel;
+import static net.stonebound.simpleircbridge.simpleircbridge.Config.timestop;
 
 
 public class SimpleIRCBridgeCommon {
@@ -49,7 +50,7 @@ public class SimpleIRCBridgeCommon {
 	}
 
 	public void serverStopping(MinecraftServer instance) {
-		if (this.mcServer != null && Boolean.parseBoolean(MemoryConfigs.get("timestop").value)) {
+		if (this.mcServer != null && timestop) {
 			this.mcServer.getPlayerList().getPlayers().forEach(player -> sendToIrc(MircColors.BOLD + MircColors.LIGHT_RED + ">>>" + player.getName().getString() + " was still online when time came to a halt<<<"));
 		}
 		if (this.bot != null) {
@@ -74,7 +75,7 @@ public class SimpleIRCBridgeCommon {
 
 	/* package-private */ void sendToIrc(String line) {
 		if (this.bot != null) {
-			this.bot.sendMessage(MemoryConfigs.get("channel").value, line);
+			this.bot.sendMessage(channel, line);
 		}
 	}
 

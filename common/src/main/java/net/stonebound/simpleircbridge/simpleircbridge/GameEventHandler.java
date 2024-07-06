@@ -1,7 +1,7 @@
 package net.stonebound.simpleircbridge.simpleircbridge;
 
+import static net.stonebound.simpleircbridge.simpleircbridge.Config.ircFormatting;
 import static net.stonebound.simpleircbridge.simpleircbridge.SIBConstants.*;
-import static net.stonebound.simpleircbridge.simpleircbridge.ConfigHolder.*;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -58,14 +58,14 @@ public class GameEventHandler {
 		if (player != null) {
 
 			String playername = player.getName().getString();
-			if (Boolean.parseBoolean(MemoryConfigs.get("ircFormatting").value)) {
+			if (ircFormatting) {
 				content = IRCMinecraftConverter.convMinecraftToIRC(content);
 			}
 			toIrc(String.format(FORMAT2_MC_CHAT, playername, content));
 		}
 
 		else {
-		if (Boolean.parseBoolean(MemoryConfigs.get("ircFormatting").value)) {
+		if (ircFormatting) {
 			content = IRCMinecraftConverter.convMinecraftToIRC(content);
 		}
 		toIrc(String.format(FORMAT2_MC_CHAT, "Server", content));

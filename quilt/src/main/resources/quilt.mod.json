@@ -1,39 +1,39 @@
 {
   "schema_version": 1,
   "quilt_loader": {
-    "group": "${group}",
-    "id": "simpleircbridge",
-    "version": "${version}",
+    "group": "${maven_group}",
+    "id": "${mod_id}",
+    "version": "${mod_version}",
     "metadata": {
-      "name": "simple irc bridge",
-      "description": "This is an example description! Tell everyone what your mod is about!",
+      "name": "${mod_name}",
+      "description": "${mod_description}",
       "contributors": {
-        "Me!": "Xnrand and contributors"
+        "Me!": "${mod_authors}"
       },
-      "icon": "assets/simpleircbridge/icon.png"
+      "icon": "assets/sbprometheus/icon.png"
     },
     "intermediate_mappings": "net.fabricmc:intermediary",
     "entrypoints": {
       "init": [
-        "net.stonebound.simpleircbridge.quilt.simpleircbridgeQuilt"
+        "net.stonebound.sbprometheus.quilt.SbPrometheusQuilt"
       ]
     },
     "depends": [
       {
         "id": "quilt_loader",
-        "version": "*"
+        "version": "${quilt_quiltloader}"
       },
       {
         "id": "quilt_base",
-        "version": "*"
+        "version": "${quilt_quiltbase}"
       },
       {
         "id": "minecraft",
-        "version": ">=1.20.4"
+        "version": "${quilt_minecraft}"
       },
       {
         "id": "architectury",
-        "version": ">=11.1.17"
+        "version": "${quilt_architectury}"
       }
     ]
   },

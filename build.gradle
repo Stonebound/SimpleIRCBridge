@@ -17,6 +17,16 @@ subprojects {
     apply plugin: 'dev.architectury.loom'
     apply plugin: 'architectury-plugin'
     apply plugin: 'maven-publish'
+    apply plugin: 'com.github.johnrengelman.shadow'
+
+    configurations {
+
+        shadowBundle {
+            canBeResolved = true
+            canBeConsumed = false
+
+        }
+    }
 
     base {
         // Set up a suffixed format for the mod jar names, e.g. `example-fabric`.
@@ -34,6 +44,79 @@ subprojects {
     dependencies {
         minecraft "net.minecraft:minecraft:$rootProject.minecraft_version"
         mappings loom.officialMojangMappings()
+
+
+        shadowBundle(implementation("com.electronwill.night-config:core:$rootProject.nightconfig_version") )
+        shadowBundle(implementation("com.electronwill.night-config:toml:$rootProject.nightconfig_version"))
+
+
+        tasks.withType(ProcessResources).configureEach {
+            var replaceProperties = [
+                    minecraft_version      : minecraft_version,
+                    mod_id                 : mod_id,
+                    mod_name               : mod_name,
+                    mod_license            : mod_license,
+                    mod_version            : mod_version,
+                    mod_authors            : mod_authors,
+                    mod_description        : mod_description,
+                    maven_group            : maven_group,
+                    mod_contact           : mod_contact,
+                    mod_git                : mod_git,
+
+                    //Quilt
+                    quilt_architectury    : quilt_architectury,
+                    quilt_minecraft       : quilt_minecraft,
+                    quilt_quiltloader     : quilt_quiltloader,
+                    quilt_quiltbase       : quilt_quiltbase,
+
+                    //Fabric
+                    fabric_fabricloader   : fabric_fabricloader,
+                    fabric_minecraft      : fabric_minecraft,
+                    fabric_java           : fabric_java,
+                    fabric_architectury   : fabric_architectury,
+                    fabric_fabricapi      : fabric_fabricapi,
+
+                    //ForgeLikes
+                    forge_loaderversion    : forge_loaderversion,
+                    forge_loaderrange      : forge_loaderrange,
+                    forge_forgeside        : forge_forgeside,
+                    forge_minecraftrange   : forge_minecraftrange,
+                    forge_architecturyrange: forge_architecturyrange,
+                    forge_architecturyside : forge_architecturyside,
+
+                    //NeoForge
+                    neoforge_loaderversion : neoforge_loaderversion,
+                    neoforge_loaderrange   : neoforge_loaderrange,
+                    neoforge_neoforgeside   : neoforge_neoforgeside,
+                    neoforge_minecraftrange: neoforge_minecraftrange,
+                    neoforge_architecturyrange: neoforge_architecturyrange,
+                    neoforge_architecturyside: neoforge_architecturyside
+
+
+
+            ]
+            inputs.properties replaceProperties
+
+            filesMatching(['META-INF/mods.toml', 'quilt.mod.json', 'fabric.mod.json']  ) {
+                expand replaceProperties
+            }
+        }
+    }
+    shadowJar {
+        configurations = [project.configurations.shadowBundle]
+        archiveClassifier = 'dev-shadow'
+
+
+        //    relocate 'redis.clients', 'net.stonebound.shaded.redis.clients'
+        relocate 'io.prometheus', 'net.stonebound.SimpleIRCBridge.shaded.io.prometheus'
+        relocate 'com.electronwill', 'net.stonebound.SimpleIRCBridge.shaded.com.electronwill'
+
+
+        dependencies {
+            exclude(dependency("org.slf4j:.*:.*"))
+            exclude(dependency("org.jetbrains:.*:.*"))
+
+        }
     }
 
     java {

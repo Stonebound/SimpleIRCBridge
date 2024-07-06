@@ -2,9 +2,9 @@ package net.stonebound.simpleircbridge.fabric;
 
 import net.fabricmc.api.ModInitializer;
 
-import net.stonebound.simpleircbridge.simpleIRCbridgeLoader;
+import net.stonebound.simpleircbridge.SimpleIRCBridge;
 
-public final class simpleircbridgeFabric implements ModInitializer {
+public final class SimpleIRCBridgeFabric implements ModInitializer {
     @Override
     public void onInitialize() {
         // This code runs as soon as Minecraft is in a mod-load-ready state.
@@ -12,6 +12,6 @@ public final class simpleircbridgeFabric implements ModInitializer {
         // Proceed with mild caution.
 
         // Run our common setup.
-        simpleIRCbridgeLoader.init();
+        SimpleIRCBridge.init();
     }
 }

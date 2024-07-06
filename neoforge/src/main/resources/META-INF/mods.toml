@@ -1,38 +1,36 @@
 modLoader = "javafml"
-loaderVersion = "[2,)"
-#issueTrackerURL = "https://github.com/Stonebound/SimpleIRCBridge"
-license = "BSD-2-Clause"
+loaderVersion = "${neoforge_loaderversion}"
+issueTrackerURL = "${mod_git}"
+license = "${mod_license}"
 
 [[mods]]
-modId = "simpleircbridge"
-version = "${version}"
-displayName = "simple irc bridge"
-authors = "Xnrand & contributors"
-description = '''
-simple irc bridge stonebound fork
-'''
+modId = "${mod_id}"
+version = "${mod_version}"
+displayName = "${mod_name}"
+authors = "${mod_authors}"
+description = "${mod_description}"
 #logoFile = ""
 
-[[dependencies.simpleircbridge]]
+[[dependencies."${mod_id}"]]
 modId = "neoforge"
 type = "required"
-versionRange = "[20.4,)"
+versionRange = "${neoforge_loaderrange}"
 ordering = "NONE"
-side = "BOTH"
+side = "${neoforge_neoforgeside}"
 
-[[dependencies.simpleircbridge]]
+[[dependencies."${mod_id}"]]
 modId = "minecraft"
 type = "required"
-versionRange = "[1.20.4,)"
+versionRange = "${neoforge_minecraftrange}"
 ordering = "NONE"
 side = "BOTH"
 
-[[dependencies.simpleircbridge]]
+[[dependencies."${mod_id}"]]
 modId = "architectury"
 type = "required"
-versionRange = "[11.1.17,)"
+versionRange = "${neoforge_architecturyrange}"
 ordering = "AFTER"
-side = "BOTH"
+side = "${neoforge_architecturyside}"
 
 [[mixins]]
 config = "simpleircbridge.mixins.json"

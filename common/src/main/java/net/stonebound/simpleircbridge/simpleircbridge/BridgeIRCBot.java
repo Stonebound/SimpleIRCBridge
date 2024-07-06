@@ -1,13 +1,13 @@
 package net.stonebound.simpleircbridge.simpleircbridge;
 
 import static net.stonebound.simpleircbridge.simpleircbridge.SIBConstants.*;
+import static net.stonebound.simpleircbridge.simpleircbridge.Config.*;
 
 import java.net.InetSocketAddress;
 
 import net.stonebound.simpleircbridge.genericircbot.AbstractIRCBot;
 import net.stonebound.simpleircbridge.genericircbot.IRCConnectionInfo;
 import net.stonebound.simpleircbridge.utils.IRCMinecraftConverter;
-import static net.stonebound.simpleircbridge.simpleircbridge.ConfigHolder.*;
 
 public class BridgeIRCBot extends AbstractIRCBot {
 
@@ -29,7 +29,11 @@ public class BridgeIRCBot extends AbstractIRCBot {
 //	}
 
 	BridgeIRCBot(SimpleIRCBridgeCommon bridge) {
-		super(new InetSocketAddress (MemoryConfigs.get("hostname").value, Integer.valueOf(MemoryConfigs.get("port").value) ), Boolean.valueOf(MemoryConfigs.get("tls").value), new IRCConnectionInfo((MemoryConfigs.get("nick")).value, MemoryConfigs.get("username").value, MemoryConfigs.get("realname").value), MemoryConfigs.get("password").value
+		super(new InetSocketAddress (hostname, port ),
+				tls,
+				new IRCConnectionInfo(nick,
+						username, realname),
+				password
 		);
 		this.bridge = bridge;
 	}
@@ -71,7 +75,7 @@ public class BridgeIRCBot extends AbstractIRCBot {
 
 	@Override
 	protected void onMessage(String channel, String sender, String message) {
-		if (Boolean.parseBoolean(MemoryConfigs.get("mcFormatting").value)) {
+		if (mcFormatting) {
 			message = IRCMinecraftConverter.convIRCtoMinecraft(message);
 		}
 		if (sender.equals("bungee")) {
@@ -98,7 +102,7 @@ public class BridgeIRCBot extends AbstractIRCBot {
 
 	@Override
 	protected void onNumeric001() {
-		joinChannel((String) MemoryConfigs.get("channel").value);
+		joinChannel(channel);
 	}
 
 	/** {@inheritDoc} */ // re-declare protected, publish method for package

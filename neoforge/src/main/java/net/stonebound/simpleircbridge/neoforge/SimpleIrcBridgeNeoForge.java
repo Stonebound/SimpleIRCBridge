@@ -2,12 +2,12 @@ package net.stonebound.simpleircbridge.neoforge;
 
 import net.neoforged.fml.common.Mod;
 
-import net.stonebound.simpleircbridge.simpleIRCbridgeLoader;
+import net.stonebound.simpleircbridge.SimpleIRCBridge;
 
-@Mod(simpleIRCbridgeLoader.MOD_ID)
+@Mod(SimpleIRCBridge.MOD_ID)
 public final class SimpleIrcBridgeNeoForge {
     public SimpleIrcBridgeNeoForge() {
         // Run our common setup.
-        simpleIRCbridgeLoader.init();
+        SimpleIRCBridge.init();
     }
 }

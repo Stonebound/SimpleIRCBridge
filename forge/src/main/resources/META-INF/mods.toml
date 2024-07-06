@@ -1,35 +1,33 @@
 modLoader = "javafml"
-loaderVersion = "[49,)"
-#issueTrackerURL = "https://github.com/Stonebound/SimpleIRCBridge"
-license = "BSD-2-Clause"
+loaderVersion = "${forge_loaderversion}"
+issueTrackerURL = "${mod_git}"
+license = "${mod_license}"
 
 [[mods]]
-modId = "simpleircbridge"
-version = "${version}"
-displayName = "simple irc bridge"
-authors = "Xnrand & contributors"
-description = '''
-simple irc bridge stonebound fork
-'''
+modId = "${mod_id}"
+version = "${mod_version}"
+displayName = "${mod_name}"
+authors = "${mod_authors}"
+description = "${mod_description}"
 #logoFile = ""
 
-[[dependencies.simpleircbridge]]
+[[dependencies."${mod_id}"]]
 modId = "forge"
 mandatory = true
-versionRange = "[49,)"
+versionRange = "${forge_loaderrange}"
 ordering = "NONE"
-side = "SERVER"
+side = "${forge_forgeside}"
 
-[[dependencies.simpleircbridge]]
+[[dependencies."${mod_id}"]]
 modId = "minecraft"
 mandatory = true
-versionRange = "[1.20.4,)"
+versionRange = "${forge_minecraftrange}"
 ordering = "NONE"
-side = "SERVER"
+side = "BOTH"
 
-[[dependencies.simpleircbridge]]
+[[dependencies."${mod_id}"]]
 modId = "architectury"
 mandatory = true
-versionRange = "[11.1.17,)"
+versionRange = "${forge_architecturyrange}"
 ordering = "AFTER"
-side = "SERVER"
+side = "${forge_architecturyside}"

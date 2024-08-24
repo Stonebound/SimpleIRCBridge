@@ -84,6 +84,7 @@ public final class Config {
         return CommentedFileConfig.builder(path)
                 .onFileNotFound(MAKE_DIRECTORIES_AND_FILE)
                 .preserveInsertionOrder()
+                .sync() // remove me when night config is updated to 3.8.1
                 .build();
     }
 
@@ -115,8 +116,7 @@ public final class Config {
         commonConfig = null;
     }
 
-    private static void correctionListener(ConfigSpec.CorrectionAction action, List<String> path, Object incorrectValue,
-                                           Object correctedValue) {
+    private static void correctionListener(ConfigSpec.CorrectionAction action, List<String> path, Object incorrectValue, Object correctedValue) {
         String key = String.join(".", path);
         switch (action) {
             case ADD:

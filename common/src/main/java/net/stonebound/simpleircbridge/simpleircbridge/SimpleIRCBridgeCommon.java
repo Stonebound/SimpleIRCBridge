@@ -13,6 +13,8 @@ import net.minecraft.server.MinecraftServer;
 import net.stonebound.simpleircbridge.utils.MircColors;
 import org.slf4j.Logger;
 
+import static net.stonebound.simpleircbridge.simpleircbridge.SIBConstants.FORMAT1_MC_LOGOUT_STOP;
+
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.regex.Matcher;
@@ -49,7 +51,9 @@ public class SimpleIRCBridgeCommon {
 
     public void serverStopping(MinecraftServer instance) {
         if (this.mcServer != null && Config.timestop) {
-            this.mcServer.getPlayerList().getPlayers().forEach(player -> sendToIrc(MircColors.BOLD + MircColors.LIGHT_RED + ">>>" + player.getName().getString() + " was still online when time came to a halt<<<"));
+            this.mcServer.getPlayerList()
+                .getPlayers()
+                .forEach(player -> sendToIrc(MircColors.BOLD + MircColors.LIGHT_RED + String.format(FORMAT1_MC_LOGOUT_STOP, SIBUtil.mangle(player.getName().getString()))));
         }
         if (this.bot != null) {
             this.bot.disconnect();

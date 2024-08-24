@@ -34,6 +34,38 @@ subprojects {
     dependencies {
         minecraft "net.minecraft:minecraft:$rootProject.minecraft_version"
         mappings loom.officialMojangMappings()
+
+        tasks.withType(ProcessResources).configureEach {
+            var replaceProperties = [
+                minecraft_version      : minecraft_version,
+                architectury_api_version: architectury_api_version,
+                mod_id                 : mod_id,
+                mod_name               : mod_name,
+                mod_license            : mod_license,
+                mod_version            : mod_version,
+                mod_authors            : mod_authors,
+                mod_description        : mod_description,
+                maven_group            : maven_group,
+                mod_contact            : mod_contact,
+                mod_git                : mod_git,
+
+                //Fabric
+                fabric_java            : fabric_java,
+                fabric_fabricapi       : fabric_fabricapi,
+                fabric_api_version     : fabric_api_version,
+                fabric_loader_version  : fabric_loader_version,
+
+                //NeoForge
+                neoforge_loaderversion : neoforge_loaderversion,
+                neoforge_loaderrange   : neoforge_loaderrange,
+                neoforge_version       : neoforge_version,
+            ]
+            inputs.properties replaceProperties
+
+            filesMatching(['META-INF/neoforge.mods.toml', 'fabric.mod.json']  ) {
+                expand replaceProperties
+            }
+        }
     }
 
     java {
@@ -42,12 +74,12 @@ subprojects {
         // If you remove this line, sources will not be generated.
         withSourcesJar()
 
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
 
     tasks.withType(JavaCompile).configureEach {
-        it.options.release = 17
+        it.options.release = 21
     }
 
     // Configure Maven publishing.

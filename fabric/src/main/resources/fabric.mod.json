@@ -1,17 +1,18 @@
 {
   "schemaVersion": 1,
-  "id": "simpleircbridge",
-  "version": "${version}",
-  "name": "simple irc bridge",
-  "description": "This is an example description! Tell everyone what your mod is about!",
+  "id": "${mod_id}",
+  "version": "${mod_version}",
+  "name": "${mod_name}",
+  "description": "${mod_description}",
   "authors": [
-    "Xnrand and contributors"
+    "${mod_authors}"
   ],
   "contact": {
-    "homepage": "https://fabricmc.net/",
-    "sources": "https://github.com/FabricMC/fabric-example-mod"
+    "homepage": "${mod_contact}",
+    "sources": "${mod_git}"
   },
-  "license": "BSD-2-Clause",
+  "license": "${mod_license}",
+  "icon": "assets/simpleircbridge/icon.png",
   "environment": "*",
   "entrypoints": {
     "main": [
@@ -19,13 +20,10 @@
     ]
   },
   "depends": {
-    "fabricloader": ">=0.15.11",
-    "minecraft": "~1.20.4",
-    "java": ">=17",
-    "architectury": ">=11.1.17",
-    "fabric-api": "*"
-  },
-  "suggests": {
-    "another-mod": "*"
+    "fabricloader": ">=${fabric_loader_version}",
+    "minecraft": "~${minecraft_version}",
+    "java": "${fabric_java}",
+    "architectury": ">=${architectury_api_version}",
+    "fabric-api": "${fabric_fabricapi}"
   }
 }

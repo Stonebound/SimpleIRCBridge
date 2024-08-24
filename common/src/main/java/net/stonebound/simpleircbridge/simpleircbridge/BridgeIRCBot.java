@@ -12,26 +12,15 @@ public class BridgeIRCBot extends AbstractIRCBot {
 
     private SimpleIRCBridgeCommon bridge;
 
-//	/* package */ BridgeIRCBot(SimpleIRCBridge bridge) {
-//
-//		super(//
-//				/* socketAddr = */ new InetSocketAddress((String) SIBConfig.IRC_HOSTNAME.get(), SIBConfig.IRC_PORT.get()), //
-//				/* useSsl = */ SIBConfig.IRC_TLS.get(), //
-//				/* info = */ new IRCConnectionInfo(
-//						/* nickname = */ !((String) SIBConfig.IRC_NICKNAME.get()).contains("(rnd)") ? ((String) SIBConfig.IRC_NICKNAME.get()) :
-//										((String) SIBConfig.IRC_NICKNAME.get()).replace("(rnd)", String.valueOf((int) (Math.random() * 100000))),
-//						/* username = */ (String) SIBConfig.IRC_USERNAME.get(),
-//						/* realname = */ (String) SIBConfig.IRC_REALNAME.get()),
-//						/* password = */ (String) SIBConfig.IRC_PASSWORD.get());
-//		SimpleIRCBridge.log().info((String) SIBConfig.IRC_HOSTNAME.get());
-//		this.bridge = bridge;
-//	}
-
     BridgeIRCBot(SimpleIRCBridgeCommon bridge) {
         super(
                 new InetSocketAddress(Config.hostname, Config.port),
                 Config.tls,
-                new IRCConnectionInfo(Config.nick, Config.username, Config.realname),
+                new IRCConnectionInfo(
+                        !Config.nick.contains("(rnd)") ? Config.nick : Config.nick.replace("(rnd)", String.valueOf((int) (Math.random() * 100000))),
+                        Config.username,
+                        Config.realname
+                ),
                 Config.password
         );
         this.bridge = bridge;

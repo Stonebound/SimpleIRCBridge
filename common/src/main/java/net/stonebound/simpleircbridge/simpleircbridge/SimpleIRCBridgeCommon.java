@@ -20,7 +20,7 @@ import java.util.regex.Pattern;
 
 
 public class SimpleIRCBridgeCommon {
-    public static final Logger logger = LogUtils.getLogger();
+    private static final Logger logger = LogUtils.getLogger();
     private BridgeIRCBot bot;
     private MinecraftServer mcServer;
     public static GameEventHandler eventHandler;
@@ -32,12 +32,12 @@ public class SimpleIRCBridgeCommon {
 
         ChatEvent.DECORATE.register(eventHandler::serverChat);
 
+        LifecycleEvent.SERVER_STARTING.register(Config::serverStarting);
+        LifecycleEvent.SERVER_STOPPING.register(Config::serverStopping);
+
         LifecycleEvent.SERVER_STARTING.register(this::serverStarting);
         LifecycleEvent.SERVER_STOPPING.register(this::serverStopping);
         LifecycleEvent.SERVER_STOPPED.register(this::serverStopped);
-
-        LifecycleEvent.SERVER_STARTING.register(Config::serverStarting);
-        LifecycleEvent.SERVER_STOPPING.register(Config::serverStopping);
     }
 
 
@@ -66,7 +66,7 @@ public class SimpleIRCBridgeCommon {
     }
 
     /* package-private */
-    static Logger log() {
+    public static Logger log() {
         return logger;
     }
 

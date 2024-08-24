@@ -24,11 +24,11 @@ public final class Config {
     public static Boolean ircFormatting = true;
     public static Boolean mcFormatting = true;
     public static String nick = "bridgebot";
-    public static String password = "true";
+    public static String password = "";
     public static String hostname = "localhost";
     public static Integer port = 6667;
     public static String channel = "#general";
-    public static Boolean tls = true;
+    public static Boolean tls = false;
     public static String username = "bridgebot";
 
     public static String realname = "SimpleIRCBridge";
@@ -120,13 +120,13 @@ public final class Config {
         String key = String.join(".", path);
         switch (action) {
             case ADD:
-                SimpleIRCBridgeCommon.logger.warn("Config key {} missing -> added default value.", key);
+                SimpleIRCBridgeCommon.log().warn("Config key {} missing -> added default value.", key);
                 break;
             case REMOVE:
-                SimpleIRCBridgeCommon.logger.warn("Config key {} not defined -> removed from config.", key);
+                SimpleIRCBridgeCommon.log().warn("Config key {} not defined -> removed from config.", key);
                 break;
             case REPLACE:
-                SimpleIRCBridgeCommon.logger.warn("Config key {} not valid -> replaced with default value.", key);
+                SimpleIRCBridgeCommon.log().warn("Config key {} not valid -> replaced with default value.", key);
         }
     }
 

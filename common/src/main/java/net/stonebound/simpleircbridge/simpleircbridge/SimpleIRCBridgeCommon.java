@@ -2,6 +2,7 @@ package net.stonebound.simpleircbridge.simpleircbridge;
 
 import com.mojang.logging.LogUtils;
 import dev.architectury.event.events.common.ChatEvent;
+import dev.architectury.event.events.common.EntityEvent;
 import dev.architectury.event.events.common.LifecycleEvent;
 import dev.architectury.event.events.common.PlayerEvent;
 import net.minecraft.ChatFormatting;
@@ -31,6 +32,7 @@ public class SimpleIRCBridgeCommon {
         eventHandler = new GameEventHandler(this);
         PlayerEvent.PLAYER_JOIN.register((Playerjoin) -> eventHandler.playerLoggedIn(Playerjoin));
         PlayerEvent.PLAYER_QUIT.register((Playerquit) -> eventHandler.playerLoggedOut(Playerquit));
+        EntityEvent.LIVING_DEATH.register(eventHandler::livingDeath);
 
         ChatEvent.DECORATE.register(eventHandler::serverChat);
 

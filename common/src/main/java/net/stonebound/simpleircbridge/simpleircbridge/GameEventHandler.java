@@ -1,8 +1,11 @@
 package net.stonebound.simpleircbridge.simpleircbridge;
 
+import dev.architectury.event.EventResult;
 import dev.architectury.event.events.common.ChatEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.LivingEntity;
 import net.stonebound.simpleircbridge.utils.IRCMinecraftConverter;
 
 import static net.stonebound.simpleircbridge.simpleircbridge.SIBConstants.*;
@@ -70,13 +73,12 @@ public class GameEventHandler {
         }
     }
 
-//	@SubscribeEvent
-//	public void livingDeath(LivingDeathEvent e) {
-//		if (e.getEntityLiving() instanceof PlayerEntity) {
-//			toIrc(String.format(FORMAT1_MC_DEATH,
-//					e.getSource().getDeathMessage(e.getEntityLiving()).getString()));
-//		}
-//	}
+	public EventResult livingDeath(LivingEntity livingEntity, DamageSource damageSource) {
+		if (livingEntity instanceof ServerPlayer) {
+			toIrc(String.format(FORMAT1_MC_DEATH, damageSource.getLocalizedDeathMessage(livingEntity).getString().replace(livingEntity.getName().toString(), SIBUtil.mangle(livingEntity.getName().toString())) ));
+		}
+        return EventResult.pass();
+	}
 
     private void toIrc(String s) {
         this.bridge.sendToIrc(s);

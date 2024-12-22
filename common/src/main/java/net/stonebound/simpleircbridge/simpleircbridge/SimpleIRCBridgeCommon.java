@@ -34,7 +34,8 @@ public class SimpleIRCBridgeCommon {
         PlayerEvent.PLAYER_QUIT.register((Playerquit) -> eventHandler.playerLoggedOut(Playerquit));
         EntityEvent.LIVING_DEATH.register(eventHandler::livingDeath);
 
-        ChatEvent.DECORATE.register(eventHandler::serverChat);
+        ChatEvent.DECORATE.register(eventHandler::formatServerChat);
+        ChatEvent.RECEIVED.register(eventHandler::serverChat);
 
         LifecycleEvent.SERVER_STARTING.register(Config::serverStarting);
         LifecycleEvent.SERVER_STOPPING.register(Config::serverStopping);
@@ -55,7 +56,7 @@ public class SimpleIRCBridgeCommon {
         if (this.mcServer != null && Config.timestop) {
             this.mcServer.getPlayerList()
                 .getPlayers()
-                .forEach(player -> sendToIrc(MircColors.BOLD + MircColors.LIGHT_RED + String.format(FORMAT1_MC_LOGOUT_STOP, SIBUtil.mangle(player.getName().getString()))));
+                .forEach(player -> sendToIrc(String.format(FORMAT1_MC_LOGOUT_STOP, SIBUtil.mangle(player.getName().getString()))));
         }
         if (this.bot != null) {
             this.bot.disconnect();

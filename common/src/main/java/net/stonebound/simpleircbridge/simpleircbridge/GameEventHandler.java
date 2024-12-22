@@ -55,22 +55,10 @@ public class GameEventHandler {
 //        }
 //    }
 
-    public void serverChat(ServerPlayer player, ChatEvent.ChatComponent component) {
+    public void formatServerChat(ServerPlayer player, ChatEvent.ChatComponent component) {
         Component chatComponent = component.get().copy();
         String content = SIBUtil.getRawText(chatComponent);
         component.set(SimpleIRCBridgeCommon.newChatWithLinks(content, false));
-        if (player != null) {
-            String playername = player.getName().getString();
-            if (Config.ircFormatting) {
-                content = IRCMinecraftConverter.convMinecraftToIRC(content);
-            }
-            toIrc(String.format(FORMAT2_MC_CHAT, playername, content));
-        } else {
-            if (Config.ircFormatting) {
-                content = IRCMinecraftConverter.convMinecraftToIRC(content);
-            }
-            toIrc(String.format(FORMAT2_MC_CHAT, "Server", content));
-        }
     }
 
     public EventResult livingDeath(LivingEntity livingEntity, DamageSource damageSource) {
@@ -82,5 +70,23 @@ public class GameEventHandler {
 
     private void toIrc(String s) {
         this.bridge.sendToIrc(s);
+    }
+
+    public EventResult serverChat(ServerPlayer serverPlayer, Component component) {
+        String content = SIBUtil.getRawText(component);
+        if (serverPlayer != null) {
+            String playername = SIBUtil.mangle(serverPlayer.getName().getString());
+            if (Config.ircFormatting) {
+                content = IRCMinecraftConverter.convMinecraftToIRC(content);
+            }
+            toIrc(String.format(FORMAT2_MC_CHAT, playername, content));
+        } else {
+            if (Config.ircFormatting) {
+                content = IRCMinecraftConverter.convMinecraftToIRC(content);
+            }
+            toIrc(String.format(FORMAT2_MC_CHAT, "Server", content));
+        }
+
+        return EventResult.pass();
     }
 }

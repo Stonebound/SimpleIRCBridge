@@ -63,7 +63,12 @@ public class GameEventHandler {
 
     public EventResult livingDeath(LivingEntity livingEntity, DamageSource damageSource) {
         if (livingEntity instanceof ServerPlayer) {
-            toIrc(String.format(FORMAT1_MC_DEATH, damageSource.getLocalizedDeathMessage(livingEntity).getString().replace(livingEntity.getName().toString(), SIBUtil.mangle(livingEntity.getName().toString())) ));
+            toIrc(String.format(
+                FORMAT1_MC_DEATH,
+                damageSource.getLocalizedDeathMessage(livingEntity)
+                    .getString()
+                    .replace(livingEntity.getName().toString(), SIBUtil.mangle(livingEntity.getName().toString()))
+            ));
         }
         return EventResult.pass();
     }
@@ -73,7 +78,7 @@ public class GameEventHandler {
     }
 
     public EventResult serverChat(ServerPlayer serverPlayer, Component component) {
-        String content = SIBUtil.getRawText(component);
+        String content = component.getString();
         if (serverPlayer != null) {
             String playername = SIBUtil.mangle(serverPlayer.getName().getString());
             if (Config.ircFormatting) {

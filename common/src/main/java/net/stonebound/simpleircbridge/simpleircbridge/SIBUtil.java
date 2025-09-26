@@ -1,7 +1,7 @@
 package net.stonebound.simpleircbridge.simpleircbridge;
 
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.contents.PlainTextContents.LiteralContents;
+import net.minecraft.network.chat.contents.LiteralContents;
 
 public class SIBUtil {
     private SIBUtil() {

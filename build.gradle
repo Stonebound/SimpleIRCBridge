@@ -1,7 +1,7 @@
 plugins {
-    id 'dev.architectury.loom' version '1.6-SNAPSHOT' apply false
+    id 'dev.architectury.loom' version '1.11-SNAPSHOT' apply false
     id 'architectury-plugin' version '3.4-SNAPSHOT'
-    id 'com.github.johnrengelman.shadow' version '8.1.1' apply false
+    id 'com.gradleup.shadow' version '8.3.6' apply false
 }
 
 architectury {
@@ -59,10 +59,15 @@ subprojects {
                 neoforge_loaderversion : neoforge_loaderversion,
                 neoforge_loaderrange   : neoforge_loaderrange,
                 neoforge_version       : neoforge_version,
+
+                //Forge
+                forge_loaderversion : forge_loaderversion,
+                forge_loaderrange   : forge_loaderrange,
+                forge_version       : forge_version,
             ]
             inputs.properties replaceProperties
 
-            filesMatching(['META-INF/neoforge.mods.toml', 'fabric.mod.json']  ) {
+            filesMatching(['META-INF/neoforge.mods.toml', 'META-INF/mods.toml', 'fabric.mod.json']  ) {
                 expand replaceProperties
             }
         }

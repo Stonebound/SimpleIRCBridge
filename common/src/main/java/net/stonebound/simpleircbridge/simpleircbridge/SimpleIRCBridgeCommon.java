@@ -145,7 +145,7 @@ public class SimpleIRCBridgeCommon {
             }
 
             // Set the click event and append the link.
-            ClickEvent click = new ClickEvent(ClickEvent.Action.OPEN_URL, url);
+            ClickEvent click = new ClickEvent.OpenUrl(URI.create(url));
             link.setStyle(link.getStyle().withClickEvent(click).withUnderlined(true).withColor(TextColor.fromLegacyFormat(ChatFormatting.BLUE)));
             if (ichat == null)
                 ichat = Component.literal("");

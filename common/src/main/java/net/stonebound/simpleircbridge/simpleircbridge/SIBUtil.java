@@ -1,7 +1,7 @@
 package net.stonebound.simpleircbridge.simpleircbridge;
 
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.contents.LiteralContents;
+import net.minecraft.network.chat.contents.PlainTextContents;
 
 public class SIBUtil {
     private SIBUtil() {
@@ -45,6 +45,6 @@ public class SIBUtil {
     //This is truly something to despair over
 
     public static String getRawText(Component message) {
-        return message.getContents() instanceof LiteralContents literalContents ? literalContents.text() : "";
+        return message.getContents() instanceof PlainTextContents plainTextContents ? plainTextContents.text() : "";
     }
 }
